@@ -1,1 +1,10 @@
-<p>employee-dashboard works!</p>
+<a routerLink="new" mat-mini-fab aria-label="Add an employee">
+  <mat-icon>add</mat-icon>
+</a>
+
+<app-employee-list
+  [employees]="employees$ | async"
+  (show)="showEmployee($event)"
+  (edit)="editEmployee($event)"
+  (delete)="deleteEmployee($event)">
+</app-employee-list>

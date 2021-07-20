@@ -1,0 +1,5 @@
+<div *ngIf="employee">
+  {{ employee.firstname }} {{ employee.lastname }} <br>
+  {{ employee.birthday | date:'dd.mm.yyyy' }} <br>
+  {{ employee.lastLogin | date:'dd.MM.yyyy hh:mm' }}
+</div>
