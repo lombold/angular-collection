@@ -15,3 +15,5 @@ export const API_V1_EMPLOYEES: CRUD = {
   UPDATE: `${environment.apiBase}/employees`,
   DELETE: (id: string) => `${environment.apiBase}/employees/${id}`,
 };
+
+export const API_V1_HEALTH = `${environment.apiBase}/health`;
