@@ -10,6 +10,7 @@ import { EmployeeDashboardComponent } from './containers/employee-dashboard/empl
 import { EmployeeCreateComponent } from './containers/employee-create/employee-create.component';
 import { EmployeeEditComponent } from './containers/employee-edit/employee-edit.component';
 import { EmployeeComponent } from './components/employee/employee.component';
+import { EmployeeListDetailComponent } from './containers/employee-list-detail/employee-list-detail.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { EmployeeComponent } from './components/employee/employee.component';
     EmployeeCreateComponent,
     EmployeeEditComponent,
     EmployeeComponent,
+    EmployeeListDetailComponent,
   ],
   imports: [
     CommonModule,

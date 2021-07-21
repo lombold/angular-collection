@@ -14,9 +14,6 @@ import {HealthService} from "@core/services/health.service";
 })
 export class EmployeeDashboardComponent implements OnInit, OnDestroy {
 
-  employeeToEdit!: Employee;
-  employees$: Observable<Employee[]> = this.employeeService.getAll();
-
   employees!: Employee[];
   healthStatus!: HealthStatus;
 
