@@ -1,6 +1,6 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject, combineLatest, fromEvent, merge, Observable, of, Subject, Subscription} from "rxjs";
-import {map, scan, takeUntil, tap} from "rxjs/operators";
+import {distinctUntilChanged, map, scan, takeUntil, tap} from "rxjs/operators";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 
 enum CountingMethod {
@@ -43,7 +43,8 @@ export class EmployeeClickComponent implements AfterViewInit, OnInit, OnDestroy 
 
     this.counter$ =
       combineLatest([this.clicks$, this.currentMethod$]).pipe(
-        tap((current) => console.log('Before' + current)),
+        // Only pass if it is a different click then the previous
+        distinctUntilChanged((prev, curr) => prev[0] === curr[0]),
         // Map the click event to a counting function
         map<any, (acc:number) => number>(([click, method]) => {
           switch (method) {
@@ -57,11 +58,9 @@ export class EmployeeClickComponent implements AfterViewInit, OnInit, OnDestroy 
               return (acc) => this.countScreen(click, acc);
           }
         }),
-        tap((current) => console.log('Counting Method' + current)),
         // Execute the counting function with the current accumulator (starting with 0)
         scan<any, number>((acc, countMethod) => countMethod(acc), 0),
-        tap((current) => console.log('After' + current)),
-        // Complete when the component gets destroyed
+        // Take until the component is destroyed
         takeUntil(this.destroy$),
       )
 
