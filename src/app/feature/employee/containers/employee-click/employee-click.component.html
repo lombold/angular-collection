@@ -1,9 +1,9 @@
 <div class="center">
   <h1>Click Counter</h1>
   <mat-button-toggle-group (change)="onToggleChange($event)" name="counting-method" aria-label="Choose counting method">
-    <mat-button-toggle checked value="screen">Screen</mat-button-toggle>
-    <mat-button-toggle value="semiscreen">Semiscreen</mat-button-toggle>
-    <mat-button-toggle value="left-right">Left/Right</mat-button-toggle>
+    <mat-button-toggle checked [value]="countingMethod.SCREEN">Screen</mat-button-toggle>
+    <mat-button-toggle [value]="countingMethod.SEMISCREEN">Semiscreen</mat-button-toggle>
+    <mat-button-toggle [value]="countingMethod.LEFT_RIGHT">Left/Right</mat-button-toggle>
   </mat-button-toggle-group>
   <ng-container *ngIf="counter$ | async as counter; else noclicks">
     <h1 class="counter">{{ counter }}</h1>
@@ -11,5 +11,8 @@
   <ng-template #noclicks>
     <h1 class="counter">No clicks yet</h1>
   </ng-template>
+  <div #hitbox class="hitbox center">
+    <span>Hit me</span>
+  </div>
 </div>
 

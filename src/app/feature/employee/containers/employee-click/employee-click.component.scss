@@ -2,3 +2,27 @@
   font-size: 3em;
   line-height: 2;
 }
+
+.hitbox {
+  display: flex;
+  width: 500px;
+  height: 500px;
+  background-color: #ccc;
+  border: #aaa dashed 3px;
+
+  & > span {
+    color: #aaa;
+    font-size: 3em;
+    line-height: 1;
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+
+    /*
+      Introduced in IE 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
+  }
+}
