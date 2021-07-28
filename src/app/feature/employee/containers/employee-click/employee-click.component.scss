@@ -25,4 +25,13 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  transition: background-color 0.2s;
+  &:hover {
+    background-color: #c9c9c9;
+  }
+  &:active {
+    background-color: #c1c1c1;
+  }
+
 }
