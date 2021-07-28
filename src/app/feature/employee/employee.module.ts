@@ -11,6 +11,7 @@ import { EmployeeCreateComponent } from './containers/employee-create/employee-c
 import { EmployeeEditComponent } from './containers/employee-edit/employee-edit.component';
 import { EmployeeComponent } from './components/employee/employee.component';
 import { EmployeeListDetailComponent } from './containers/employee-list-detail/employee-list-detail.component';
+import { EmployeeClickComponent } from './containers/employee-click/employee-click.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { EmployeeListDetailComponent } from './containers/employee-list-detail/e
     EmployeeEditComponent,
     EmployeeComponent,
     EmployeeListDetailComponent,
+    EmployeeClickComponent,
   ],
   imports: [
     CommonModule,

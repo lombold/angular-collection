@@ -15,8 +15,6 @@ export class EmployeeListDetailComponent implements OnInit {
 
   firstEmployee$: Observable<Employee> = of();
 
-  clicks$: Observable<Event> = fromEvent(document,'click');
-
   constructor(
     private employeeService: EmployeeService,
     private healthService: HealthService,
