@@ -1,0 +1,22 @@
+<a routerLink="new" mat-mini-fab aria-label="Add an employee">
+  <mat-icon>add</mat-icon>
+</a>
+
+<div>
+  <ng-container *ngIf="healthStatus; else loading">
+    <span *ngIf="healthStatus.code === 200; else unhealthy">Backend Healthy :)</span>
+    <ng-template #unhealthy>
+      <span>Backend Unhealthy!</span>
+    </ng-template>
+  </ng-container>
+  <ng-template #loading>
+    <span>Loading Backend Health...</span>
+  </ng-template>
+</div>
+
+<app-employee-list
+  [employees]="employees"
+  (show)="showEmployee($event)"
+  (edit)="editEmployee($event)"
+  (delete)="deleteEmployee($event)">
+</app-employee-list>

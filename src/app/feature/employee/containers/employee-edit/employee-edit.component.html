@@ -1,0 +1,9 @@
+<ng-container *ngIf="employee$ | async as employee; else loading">
+  <app-employee-form [employee]="employee" (submit)="submitForm($event)">
+    <span>{{ employee.firstname }}</span>
+  </app-employee-form>
+  <app-employee [employee]="employee"></app-employee>
+</ng-container>
+<ng-template #loading>
+  Ich bin am laden
+</ng-template>

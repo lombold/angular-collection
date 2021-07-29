@@ -1,0 +1,10 @@
+.employee-form {
+  display: flex;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: stretch;
+
+  & > * {
+    display: flex;
+  }
+}

@@ -1,0 +1,14 @@
+<ul>
+  <li *ngFor="let employee of employees">
+    {{ employee.firstname }} {{ employee.lastname }}
+    <button mat-icon-button aria-label="Show Employee" (click)="show.emit(employee)">
+      <mat-icon>visibility</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Edit Employee" (click)="edit.emit(employee)">
+      <mat-icon>edit</mat-icon>
+    </button>
+    <button mat-icon-button aria-label="Delete Employee" (click)="delete.emit(employee)">
+      <mat-icon>delete</mat-icon>
+    </button>
+  </li>
+</ul>

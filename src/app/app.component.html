@@ -1,5 +1,14 @@
 <header>
-  Navigation
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <span>Employee Register</span>
+      <a mat-button routerLink="/employees" href="">Employees</a>
+      <a mat-button routerLink="/employees/list-detail" href="">List->Detail</a>
+      <a mat-button routerLink="/employees/click" href="">Click</a>
+      <span class="navigation-spacer"></span>
+      <a href="#">login</a>
+    </mat-toolbar-row>
+  </mat-toolbar>
 </header>
 <div class="wrapper">
   <router-outlet></router-outlet>
