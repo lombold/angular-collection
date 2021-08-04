@@ -15,6 +15,7 @@ import {
   MomentDateAdapter
 } from "@angular/material-moment-adapter";
 import 'moment/locale/de-ch';
+import { StoreModule } from '@ngrx/store';
 
 @NgModule({
   declarations: [
@@ -28,6 +29,7 @@ import 'moment/locale/de-ch';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
+    StoreModule.forRoot({}, {}),
   ],
   providers: [
     {provide: MAT_DATE_LOCALE, useValue: 'de-CH'},
