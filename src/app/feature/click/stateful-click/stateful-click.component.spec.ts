@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { EmployeeClickComponent } from './employee-click.component';
+import { StatefulClickComponent } from './stateful-click.component';
 
-describe('EmployeeClickComponent', () => {
-  let component: EmployeeClickComponent;
-  let fixture: ComponentFixture<EmployeeClickComponent>;
+describe('StatefulClickComponent', () => {
+  let component: StatefulClickComponent;
+  let fixture: ComponentFixture<StatefulClickComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ EmployeeClickComponent ]
+      declarations: [ StatefulClickComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(EmployeeClickComponent);
+    fixture = TestBed.createComponent(StatefulClickComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -11,10 +11,10 @@ enum CountingMethod {
 
 @Component({
   selector: 'app-employee-click',
-  templateUrl: './employee-click.component.html',
-  styleUrls: ['./employee-click.component.scss']
+  templateUrl: './click.component.html',
+  styleUrls: ['./click.component.scss']
 })
-export class EmployeeClickComponent implements AfterViewInit, OnInit, OnDestroy {
+export class ClickComponent implements AfterViewInit, OnInit, OnDestroy {
 
   countingMethod = CountingMethod;
 
