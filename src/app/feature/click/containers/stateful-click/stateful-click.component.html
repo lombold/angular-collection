@@ -5,6 +5,7 @@
     <mat-button-toggle [value]="countingMethod.SEMISCREEN">Semiscreen</mat-button-toggle>
     <mat-button-toggle [value]="countingMethod.LEFT_RIGHT">Left/Right</mat-button-toggle>
   </mat-button-toggle-group>
+  <button mat-button color="warn" (click)="onReset($event)">Reset</button>
   <ng-container *ngIf="counter$ | async as counter; else noclicks">
     <h1 class="counter">{{ counter }}</h1>
   </ng-container>

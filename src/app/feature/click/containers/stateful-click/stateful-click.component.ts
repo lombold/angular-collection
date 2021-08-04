@@ -1,125 +1,102 @@
-import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {BehaviorSubject, fromEvent, merge, Observable, of, Subject, Subscription} from "rxjs";
 import {map, scan, takeUntil, tap, withLatestFrom} from "rxjs/operators";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {CountingMethod} from "@feature/click/counting-method";
+import {Store} from "@ngrx/store";
+import {decrement, increment, reset} from "@core/store/actions/counter.actions";
 
 @Component({
   selector: 'app-stateful-click',
   templateUrl: './stateful-click.component.html',
   styleUrls: ['./stateful-click.component.scss']
 })
-export class StatefulClickComponent implements OnInit, OnDestroy {
+export class StatefulClickComponent implements OnInit, OnDestroy, AfterViewInit {
 
   countingMethod = CountingMethod;
 
   @ViewChild('hitbox') hitbox!: ElementRef<HTMLInputElement>;
 
-  public counter$ = of()
+  public counter$: Observable<number>;
   private destroy$ = new Subject<void>();
-  private leftClicks$!: Observable<Event>;
-  private rightClicks$!: Observable<Event>;
-  private clicks$!: Observable<Event>;
+  private leftClicks$!: Observable<MouseEvent>;
+  private rightClicks$!: Observable<MouseEvent>;
+  private clicks$!: Observable<MouseEvent>;
 
   private currentMethod$ = new BehaviorSubject<string>(CountingMethod.SCREEN);
-  private preventContextMenu!: Subscription;
+
+  private counterInteractions$: Observable<[MouseEvent, string]> = of();
 
   config: any = {
     [CountingMethod.SCREEN]: (click: any) => this.countScreen(click),
   }
 
-  constructor() {
+  constructor(
+    private store: Store<{ count: number }>,
+  ) {
+    this.counter$ = store.select('count');
   }
 
   ngOnInit(): void {
   }
 
   ngAfterViewInit(): void {
-    this.leftClicks$ = fromEvent(this.hitbox.nativeElement,'click');
+    this.leftClicks$ = fromEvent<MouseEvent>(this.hitbox.nativeElement,'click');
     this.rightClicks$ =
-      fromEvent(this.hitbox.nativeElement, 'contextmenu')
+      fromEvent<MouseEvent>(this.hitbox.nativeElement, 'contextmenu')
         .pipe(tap((event) => event.preventDefault()));
     this.clicks$ = merge(this.leftClicks$, this.rightClicks$);
 
-    // this.counter$ =
-    //   combineLatest([this.clicks$, this.currentMethod$]).pipe(
-    //     // Only pass if it is a different click then the previous
-    //     distinctUntilChanged(([prevClick, ...prevRest], [currClick, ...currRest]) => prevClick === currClick),
-    //     withLatestFrom(this.currentMethod$),
-    //     // Map the click event to a counting function
-    //     map<any, number>(([click, method]) => {
-    //
-    //       // return this.config[method](click);
-    //
-    //       switch (method) {
-    //         case CountingMethod.SCREEN:
-    //           return this.countScreen(click);
-    //         case CountingMethod.SEMISCREEN:
-    //           return this.countSemiScreen(click);
-    //         case CountingMethod.LEFT_RIGHT:
-    //           return this.countLeftRight(click);
-    //         default:
-    //           return this.countScreen(click);
-    //       }
-    //     }),
-    //     // Execute the counting function with the current accumulator (starting with 0)
-    //     scan<number, number>((acc, num) => acc + num, 0),
-    //     // Take until the component is destroyed
-    //     takeUntil(this.destroy$),
-    //   )
 
-    this.counter$ = this.clicks$.pipe(
+    this.counterInteractions$ = this.clicks$.pipe(
       withLatestFrom(this.currentMethod$),
-      // Map the click event to a counting function
-      map<any, number>(([click, method]) => {
-
-        // return this.config[method](click);
-
-        switch (method) {
-          case CountingMethod.SCREEN:
-            return this.countScreen(click);
-          case CountingMethod.SEMISCREEN:
-            return this.countSemiScreen(click);
-          case CountingMethod.LEFT_RIGHT:
-            return this.countLeftRight(click);
-          default:
-            return this.countScreen(click);
-        }
-      }),
-      // Execute the counting function with the current accumulator (starting with 0)
-      scan<number, number>((acc, num) => acc + num, 0),
       // Take until the component is destroyed
       takeUntil(this.destroy$),
     )
+
+
+    this.counterInteractions$.subscribe(([click, method]) => {
+      switch (method) {
+        case CountingMethod.SCREEN:
+          return this.countScreen(click);
+        case CountingMethod.SEMISCREEN:
+          return this.countSemiScreen(click);
+        case CountingMethod.LEFT_RIGHT:
+          return this.countLeftRight(click);
+        default:
+          return this.countScreen(click);
+      }
+    });
   }
 
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-    this.currentMethod$.complete(); // Optional
   }
 
   onToggleChange($event: MatButtonToggleChange) {
     this.currentMethod$.next($event.value);
   }
 
-  countScreen(event: MouseEvent): number {
-    return 1;
+  countScreen(event: MouseEvent): void {
+    this.store.dispatch(increment());
   }
 
-  countSemiScreen(event: MouseEvent): number {
+  countSemiScreen(event: MouseEvent): void {
     if (event.pageX >= document.body.clientWidth / 2)
-      return 1;
+      this.store.dispatch(increment());
     else
-      return -1;
+      this.store.dispatch(decrement());;
   }
 
-  countLeftRight(event: MouseEvent): number {
+  countLeftRight(event: MouseEvent): void {
     if (event.button === 0)
-      return 1;
+      this.store.dispatch(increment());
     else
-      event.preventDefault();
-    return -1;
+      this.store.dispatch(decrement());
   }
 
+  onReset($event: MouseEvent) {
+    this.store.dispatch(reset())
+  }
 }
