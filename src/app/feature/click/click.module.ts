@@ -1,10 +1,13 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 
-import { ClickRoutingModule } from './click-routing.module';
-import { StatefulClickComponent } from './containers/stateful-click/stateful-click.component';
+import {ClickRoutingModule} from './click-routing.module';
+import {StatefulClickComponent} from './containers/stateful-click/stateful-click.component';
 import {ClickComponent} from "@feature/click/containers/click/click.component";
 import {SharedModule} from "@shared/shared.module";
+import {StoreModule} from "@ngrx/store";
+import {counterReducer} from "@feature/click/store/counter.reducer";
+import {featureKey} from "@feature/click/store/counter.selectors";
 
 
 @NgModule({
@@ -15,7 +18,13 @@ import {SharedModule} from "@shared/shared.module";
   imports: [
     CommonModule,
     SharedModule,
-    ClickRoutingModule
+    ClickRoutingModule,
+    StoreModule.forFeature(
+      featureKey,
+      {
+        count: counterReducer
+      }, {}),
   ]
 })
-export class ClickModule { }
+export class ClickModule {
+}

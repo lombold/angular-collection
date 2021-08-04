@@ -16,7 +16,6 @@ import {
 } from "@angular/material-moment-adapter";
 import 'moment/locale/de-ch';
 import { StoreModule } from '@ngrx/store';
-import {counterReducer} from "@core/store/reducers/counter.reducer";
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 
@@ -32,9 +31,7 @@ import { environment } from '../environments/environment';
     MatToolbarModule,
     MatIconModule,
     MatButtonModule,
-    StoreModule.forRoot({
-      count: counterReducer
-    }, {}),
+    StoreModule.forRoot({}, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
   ],
   providers: [

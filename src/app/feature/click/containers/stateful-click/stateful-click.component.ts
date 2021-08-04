@@ -1,10 +1,12 @@
 import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, fromEvent, merge, Observable, of, Subject, Subscription} from "rxjs";
-import {map, scan, takeUntil, tap, withLatestFrom} from "rxjs/operators";
+import {BehaviorSubject, fromEvent, merge, Observable, of, Subject} from "rxjs";
+import {takeUntil, tap, withLatestFrom} from "rxjs/operators";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {CountingMethod} from "@feature/click/counting-method";
-import {Store} from "@ngrx/store";
-import {decrement, increment, reset} from "@core/store/actions/counter.actions";
+import {select, Store} from "@ngrx/store";
+import {decrement, increment, reset} from "@feature/click/store/counter.actions";
+import {selectCounter, selectFeature} from "@feature/click/store/counter.selectors";
+import {AppState} from "@core/store/AppState";
 
 @Component({
   selector: 'app-stateful-click',
@@ -17,7 +19,7 @@ export class StatefulClickComponent implements OnInit, OnDestroy, AfterViewInit 
 
   @ViewChild('hitbox') hitbox!: ElementRef<HTMLInputElement>;
 
-  public counter$: Observable<number>;
+  public counter$: Observable<number> = of();
   private destroy$ = new Subject<void>();
   private leftClicks$!: Observable<MouseEvent>;
   private rightClicks$!: Observable<MouseEvent>;
@@ -32,9 +34,9 @@ export class StatefulClickComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   constructor(
-    private store: Store<{ count: number }>,
+    private store: Store<AppState>,
   ) {
-    this.counter$ = store.select('count');
+    this.counter$ = this.store.select(selectCounter);
   }
 
   ngOnInit(): void {

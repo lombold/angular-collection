@@ -109,5 +109,8 @@
       "style": "scss"
     }
   },
-  "defaultProject": "angular-collection"
+  "defaultProject": "angular-collection",
+  "cli": {
+    "defaultCollection": "@ngrx/schematics"
+  }
 }
