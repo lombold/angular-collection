@@ -1,20 +1,15 @@
-import {AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
-import {BehaviorSubject, combineLatest, fromEvent, merge, Observable, of, Subject, Subscription} from "rxjs";
-import {distinctUntilChanged, map, scan, takeUntil, tap, withLatestFrom} from "rxjs/operators";
+import {Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {BehaviorSubject, fromEvent, merge, Observable, of, Subject, Subscription} from "rxjs";
+import {map, scan, takeUntil, tap, withLatestFrom} from "rxjs/operators";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
-
-enum CountingMethod {
-  SCREEN = 'Screen',
-  SEMISCREEN = 'Semi Screen',
-  LEFT_RIGHT = 'Left-Right',
-}
+import {CountingMethod} from "@feature/click/counting-method";
 
 @Component({
-  selector: 'app-employee-click',
-  templateUrl: './click.component.html',
-  styleUrls: ['./click.component.scss']
+  selector: 'app-stateful-click',
+  templateUrl: './stateful-click.component.html',
+  styleUrls: ['./stateful-click.component.scss']
 })
-export class ClickComponent implements AfterViewInit, OnInit, OnDestroy {
+export class StatefulClickComponent implements OnInit, OnDestroy {
 
   countingMethod = CountingMethod;
 
@@ -43,7 +38,7 @@ export class ClickComponent implements AfterViewInit, OnInit, OnDestroy {
     this.leftClicks$ = fromEvent(this.hitbox.nativeElement,'click');
     this.rightClicks$ =
       fromEvent(this.hitbox.nativeElement, 'contextmenu')
-      .pipe(tap((event) => event.preventDefault()));
+        .pipe(tap((event) => event.preventDefault()));
     this.clicks$ = merge(this.leftClicks$, this.rightClicks$);
 
     // this.counter$ =
@@ -74,28 +69,28 @@ export class ClickComponent implements AfterViewInit, OnInit, OnDestroy {
     //   )
 
     this.counter$ = this.clicks$.pipe(
-        withLatestFrom(this.currentMethod$),
-        // Map the click event to a counting function
-        map<any, number>(([click, method]) => {
+      withLatestFrom(this.currentMethod$),
+      // Map the click event to a counting function
+      map<any, number>(([click, method]) => {
 
-          // return this.config[method](click);
+        // return this.config[method](click);
 
-          switch (method) {
-            case CountingMethod.SCREEN:
-              return this.countScreen(click);
-            case CountingMethod.SEMISCREEN:
-              return this.countSemiScreen(click);
-            case CountingMethod.LEFT_RIGHT:
-              return this.countLeftRight(click);
-            default:
-              return this.countScreen(click);
-          }
-        }),
-        // Execute the counting function with the current accumulator (starting with 0)
-        scan<number, number>((acc, num) => acc + num, 0),
-        // Take until the component is destroyed
-        takeUntil(this.destroy$),
-      )
+        switch (method) {
+          case CountingMethod.SCREEN:
+            return this.countScreen(click);
+          case CountingMethod.SEMISCREEN:
+            return this.countSemiScreen(click);
+          case CountingMethod.LEFT_RIGHT:
+            return this.countLeftRight(click);
+          default:
+            return this.countScreen(click);
+        }
+      }),
+      // Execute the counting function with the current accumulator (starting with 0)
+      scan<number, number>((acc, num) => acc + num, 0),
+      // Take until the component is destroyed
+      takeUntil(this.destroy$),
+    )
   }
 
   ngOnDestroy(): void {
@@ -124,6 +119,7 @@ export class ClickComponent implements AfterViewInit, OnInit, OnDestroy {
       return 1;
     else
       event.preventDefault();
-      return -1;
+    return -1;
   }
+
 }
