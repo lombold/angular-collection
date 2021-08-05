@@ -3,9 +3,9 @@ import {BehaviorSubject, fromEvent, merge, Observable, of, Subject} from "rxjs";
 import {takeUntil, tap, withLatestFrom} from "rxjs/operators";
 import {MatButtonToggleChange} from "@angular/material/button-toggle";
 import {CountingMethod} from "@feature/click/counting-method";
-import {select, Store} from "@ngrx/store";
-import {decrement, increment, reset} from "@feature/click/store/counter.actions";
-import {selectCounter, selectFeature} from "@feature/click/store/counter.selectors";
+import {Store} from "@ngrx/store";
+import {decrement, increment, resetRequested} from "@feature/click/store/counter.actions";
+import {selectCounter} from "@feature/click/store/counter.selectors";
 import {AppState} from "@core/store/AppState";
 
 @Component({
@@ -99,6 +99,6 @@ export class StatefulClickComponent implements OnInit, OnDestroy, AfterViewInit 
   }
 
   onReset($event: MouseEvent) {
-    this.store.dispatch(reset())
+    this.store.dispatch(resetRequested())
   }
 }

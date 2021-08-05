@@ -1,24 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 
-import {concatMap, tap} from 'rxjs/operators';
+import {concatMap, map, mergeMap, tap} from 'rxjs/operators';
 import * as CounterActions from './counter.actions';
+import {MatDialog} from "@angular/material/dialog";
+import {ConfirmationDialogComponent} from "@shared/dialogs/confirmation-dialog/confirmation-dialog.component";
 
 
 @Injectable()
 export class CounterEffects {
 
- // https://ngrx.io/guide/effects/lifecycle#non-dispatching-effects
   resetCounters$ = createEffect(() => {
     return this.actions$.pipe(
-      ofType(CounterActions.reset),
-      tap((state) => {
-        console.log("effect triggered: ", state);
-      })
+      ofType(CounterActions.resetRequested),
+      mergeMap((action) => {
+        const dialogRef = this.dialog.open(ConfirmationDialogComponent);
+
+        return dialogRef.afterClosed().pipe(
+          map(result => {
+              if (result) {
+                return CounterActions.resetApproved()
+              } else {
+                return CounterActions.resetCancelled()
+              }
+          })
+        );
+      }),
     );
-  }, { dispatch: false });
+  });
 
-
-  constructor(private actions$: Actions) {}
+  constructor(private actions$: Actions, public dialog: MatDialog) {}
 
 }

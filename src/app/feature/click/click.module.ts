@@ -26,7 +26,7 @@ import { CounterEffects } from './store/counter.effects';
       {
         count: counterReducer
       }, {}),
-    EffectsModule.forFeature([CounterEffects]),
+    EffectsModule.forFeature([  CounterEffects]),
   ]
 })
 export class ClickModule {

@@ -5,6 +5,7 @@ import {MatIconModule} from "@angular/material/icon";
 import {MatInputModule} from "@angular/material/input";
 import {MatDatepickerModule} from "@angular/material/datepicker";
 import {MatButtonToggleModule} from "@angular/material/button-toggle";
+import {MatDialogModule} from "@angular/material/dialog";
 
 
 @NgModule({
@@ -16,6 +17,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatInputModule,
     MatDatepickerModule,
     MatButtonToggleModule,
+    MatDialogModule,
   ],
   exports: [
     MatButtonModule,
@@ -23,6 +25,7 @@ import {MatButtonToggleModule} from "@angular/material/button-toggle";
     MatInputModule,
     MatDatepickerModule,
     MatButtonToggleModule,
+    MatDialogModule,
   ],
 })
 export class MaterialModule { }
