@@ -8,6 +8,8 @@ import {SharedModule} from "@shared/shared.module";
 import {StoreModule} from "@ngrx/store";
 import {counterReducer} from "@feature/click/store/counter.reducer";
 import {featureKey} from "@feature/click/store/counter.selectors";
+import { EffectsModule } from '@ngrx/effects';
+import { CounterEffects } from './store/counter.effects';
 
 
 @NgModule({
@@ -24,6 +26,7 @@ import {featureKey} from "@feature/click/store/counter.selectors";
       {
         count: counterReducer
       }, {}),
+    EffectsModule.forFeature([CounterEffects]),
   ]
 })
 export class ClickModule {
